@@ -7,3 +7,5 @@ Actually I think this is like the 5th commit since I'm pretty sure I accidently 
 ok 6th commit let's go.
 I think this read me is starting to look like an incoherent mess.
 Seriously this Read me is very messy now.
+Ok I think i'm done messing with this for now.
+Yeah I think this is good now.
