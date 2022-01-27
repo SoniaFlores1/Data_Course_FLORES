@@ -70,3 +70,16 @@ for (i in 1:145){
   print(readLines(csv_files[i])[1])
 }
 
+
+#A correction for this assignment
+for (b in bfiles){
+  print(readLines(b)[1])
+}
+
+
+for (i in csv_files){
+  print(readLines(i)[1])
+}
+
+#This set up for the for loop is a better fit for what we're looking for.
+#What if you don't know the exact number of files? So this change is better.
