@@ -161,4 +161,130 @@ ggplot(penguins, aes(x=body_mass_g, y=flipper_length_mm, color=species)) +
   geom_point() +
   geom_smooth()
 
+# ggplot layers
+library(tidyverse)
+library(palmerpenguins)
+
+penguins %>% glimpse() #remember the pipe
+
+#easier way to see what's going on in penguins
+
+data(penguins)
+
+#make a plot
+
+p<- penguins %>% 
+  ggplot(aes(x=bill_length_mm, y=body_mass_g, color=species))
+#we saved this basic blank plot as p. 
+
+p
+#We can start stacking geometries onto this plot p, by layering with +
+
+p + geom_point()
+
+#penguins is the first argument to ggplot because it was piped in.
+#How we display 
+
+#we can modify our plots as well
+
+p + geom_point(size=2, shape=12)
+#whenever an aestethic is assigned to something, geom will apply those geometries
+
+p + 
+  geom_point(alpha=.25) + 
+  geom_smooth(method="lm")
+#alpha is transparency between 0 and 1
+#geom_smooth adds a regression line, with the method as "lm" keeps it in a linear model
+#normally it would just curve around the data.
+
+#We can add facets
+p + 
+  geom_point(alpha=.25) + 
+  geom_smooth(method="lm") +
+  facet_wrap(~species)
+
+#now we made separate subgraphs based off the information in the columns
+#here are more examples of facets.
+  
+p + 
+  geom_point(alpha=.25) + 
+  geom_smooth(method="lm") +
+  facet_wrap(~sex)
+
+p + 
+  geom_point(alpha=.25) + 
+  geom_smooth(method="lm") +
+  facet_wrap(~island)
+
+#Visualizing data can help use get more information about our data long before modelling
+
+#We can apply different statistics to our data, even on our plot
+#we can also change coordinates
+
+p + 
+  geom_point(alpha=.25) + 
+  geom_smooth(method="lm") +
+  facet_wrap(~island) +
+  coord_flip()
+#now the X and Y axes are switched. 
+#You can also do other things, like removing the fixing of scales
+
+p + 
+  geom_point(alpha=.25) + 
+  geom_smooth(method="lm") +
+  facet_wrap(~island, scales="free") +
+  coord_flip()
+#you can also change cartesian points
+p + 
+  geom_point(alpha=.25) + 
+  geom_smooth(method="lm") +
+  facet_wrap(~island) +
+  coord_cartesian(xlim=c(40,50), ylim=c(3000,4000))
+
+#we can add themes to our plots
+p + 
+  geom_point(alpha=.25) + 
+  geom_smooth(method="lm") +
+  facet_wrap(~island) +
+  coord_cartesian(xlim=c(40,50), ylim=c(3000,4000)) +
+  theme_minimal()
+
+#we can change other aspects as well
+p + 
+  geom_point(alpha=.25) + 
+  geom_smooth(method="lm") +
+  facet_wrap(~island) +
+  coord_cartesian(xlim=c(40,50), ylim=c(3000,4000)) +
+  theme(axis.title.x= element_text(face="bold", size=12, color="blue"),
+        axis.text.x = element_text(angle=90, hjust=1, face="bold", size=16)) +
+  labs(x="Bill Length (mm)", 
+       y="Body Mass (g)", 
+       title = "Ugly plot of penguins",
+       subtitle= "whatever", 
+       caption = "Data from palmerpenguins R package",
+       color="Species of Penguin")
+
+#this is a lot, but this graph is reproducible with this code.
+#if our data changes, we can still use this code and will account for changes.
+
+#Let us make our own plot
+
+p2<- penguins %>% 
+  ggplot(aes(x=bill_depth_mm, y=bill_length_mm, fill=species))
+
+p2
+
+p2 +
+  geom_boxplot(alpha=.5) +
+  facet_wrap(~species) +
+  labs(x="Bill Depth(mm)", 
+       y="Bill Length(mm)", 
+       title = "Length Vs Depth of Penguin Bills",
+       subtitle= "or something", 
+       fill="Species of Penguin")
+
+
+
+
+
 
