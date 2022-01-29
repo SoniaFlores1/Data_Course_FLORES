@@ -248,7 +248,7 @@ which(momentous == TRUE)
 #tells us which birds have momentums greater than 2000
 
 df[momentous,]
-#shows use the associated data of the brids with momentums greater than 2000
+#shows use the associated data of the birds with momentums greater than 2000
 
 dim(df[momentous,])
 #gives us the dimensions of this data. We have 31 birds with over 2000 momentum
