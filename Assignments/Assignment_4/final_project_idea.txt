@@ -1,0 +1,21 @@
+2. For my final project, I want to use R for multiple sequence alignment and phylogenetic tree
+creation to learn about how to perform alignments using the msa R package and verify its ability
+to use ClustalW, ClustalOmega, and MUSCLE. I want to test this by aligning and creating a tree
+using a Mitochondrial gene (I haven't decided which one yet) from various birds, with maybe
+a crocodilian or other reptile as an outgroup. 
+
+3. The data I'm going to be using will be FASTA files describing the DNA sequences of the target
+genes from various species of animals. I will be getting that data from NCBI's GenBank. 
+I can also use the amino acid sequences for the proteins from some genes as well, if possible.
+For example, the FASTA would have text such as the following:
+
+>NC_034838.1:878-2958 Corvus corax isolate 70173 mitochondrion, complete genome
+GCAGTAAAGTGGGACAATCGAGCCCTCTTTAAGCCGGCTCTGGGACACGTACATACCGCCCGTCACCCTC
+CTCACAAGCGACCCCCAACCCCATTACATTAATACGCTATCTAGCTAAAGAGGAGGCAAGTCGTAACAAG....
+
+This along with other FASTA files from different species will be aligned in R and then used to
+form a phylogenetic tree in R using the Ape package. 
+
+4. Look at the file called "final_project_example_data.txt" to see how the data would look like.
+
+5. I am unsure on how a plot would look like with this type of data. 
