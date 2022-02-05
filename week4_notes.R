@@ -92,7 +92,69 @@ ggplot(penguins, aes(x=body_mass_g, y=bill_length_mm)) +
 
 #you can use google's color selector to find a color and obtain a hexcode.
 
+#It is possible to set a theme for all your plots if you set the theme before 
+#you start building graphs
+#Look back up to Line 7 for an example of this. ^
 
 #To find built in data (from both R and from other packages)
 data("band_instruments")
+
+##NOTE: Look into Multiple Sequence Alignment R packages for skill build-up
+#and Final Project ideas.
+
+#Let's look at a new data set: mpg (load tidyverse first!!)
+mpg #Looks at the miles per gallon of cars
+
+mpg %>% glimpse()
+
+#Engine size, cylinder size, year of the car, can be predictors on city (mpg)
+
+mpg %>% 
+  ggplot(aes(y=cty, x=displ, color=factor(year)))+ #year needs to be set to factor
+  geom_point()+
+  geom_smooth(method="lm",formula= y ~ poly(x,2))+ #structure read as "y as a function of"
+  theme_bw()+
+  labs(x="Engine Displacement (L)",
+       y="City miles per gallon",
+       color="Year")+
+  #scale_colour_viridis_d()+
+  scale_color_manual(values = c("Orange2","Purple")) +
+  facet_wrap(~drv)+
+  theme(strip.text= element_text(face="bold", color="Red"),
+        strip.background= element_rect(fill="Green3", color="Blue",
+                                       linetype=3),
+        axis.title.x= element_text(angle=180, color="Yellow"),
+        axis.title.y= element_text(color="Green2", angle=270),
+        plot.background= element_rect(fill="Pink3"))
+#Yes, this plot looks horrible, but that is the point
+
+ordered_by_med<-mpg %>% 
+  group_by(class) %>% 
+  summarize(Medhwy= median(hwy)) %>% 
+  arrange((Medhwy))
+
+
+
+mpg %>% 
+  ggplot(aes(y=hwy, x=class))+
+  geom_violin(fill="DarkGreen")+
+  geom_point() +
+  geom_jitter(size=0.5)+
+  geom_boxplot(alpha=0.5)+
+  theme_bw()+
+  coord_flip()
+
+#This graph is based on the new ordered class made in line 131
+mpg %>% 
+  mutate(ordered_class = factor(class, levels= ordered_by_med$class)) %>% 
+  ggplot(aes(y=hwy, x=ordered_class))+
+  geom_violin(fill="DarkGreen")+
+  geom_point() +
+  geom_jitter(size=0.5)+
+  geom_boxplot(alpha=0.5)+
+  theme_bw()+
+  coord_flip()
+
+#Install ggimage
+library(ggimage)
 
