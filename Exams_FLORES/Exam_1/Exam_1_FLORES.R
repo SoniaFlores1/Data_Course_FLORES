@@ -25,8 +25,8 @@ A_states %>%
   geom_point(size=0.5, show.legend = FALSE)+
   geom_smooth(method="loess",aes(group=Province_State), color="black", se=FALSE)+
   facet_wrap(~Province_State, scales="free")+
-  scale_x_discrete(breaks=c("2020-06-01","2021-01-01","2021-06-01","2021-12-01"))+
-  theme(axis.text.x=element_text(angle=25, face="bold"),
+  scale_x_discrete(breaks=c("2020-06-01","2021-01-01","2021-06-01","2022-01-01"))+
+  theme(axis.text.x=element_text(angle=0, face="bold"),
         axis.text.y=element_text(face="bold"),
         axis.title.x= element_text(face="bold", size=12),
         axis.title.y=element_text(face="bold", size=12),
@@ -34,7 +34,7 @@ A_states %>%
                                         size=1, linetype="solid"),
         strip.text.x = element_text(size=10,face="bold"))+
   labs(x="Time", 
-       y="Covid-19 Deaths")
+       y="Number of Covid-19 Deaths")
 
 
 #IV. (Back to the full dataset) Find the “peak” of Case_Fatality_Ratio 
@@ -56,11 +56,11 @@ state_max_fatality_rate %>%
                              levels= state_max_fatality_rate$Province_State)) %>%
   ggplot(aes(x=d_states, y=Maximum_Fatality_Ratio))+
            geom_bar(stat="identity", fill="#28768A")+
-  theme(axis.text.x=element_text(angle=90, face="bold"),
+  theme(axis.text.x=element_text(angle=90, face="bold",hjust =1,vjust=0.5),
         axis.title.x= element_text(face="bold", size=12),
         axis.title.y=element_text(face="bold", size=12),
         plot.title = element_text(hjust=0.5))+
   labs(x="US States and Provinces", y="Fatality Rates",
        title="Maximum Fatality Rates of Covid19\nin The United States of America")
-  
 
+#VI. (BONUS 10 pts) Using the FULL data set, plot cumulative deaths for the entire US over time
