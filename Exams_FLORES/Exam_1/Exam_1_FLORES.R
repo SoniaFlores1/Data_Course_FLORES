@@ -33,7 +33,7 @@ A_states %>%
         strip.background = element_rect(colour="black", fill="#E6B9CC",
                                         size=1, linetype="solid"),
         strip.text.x = element_text(size=10,face="bold"))+
-  labs(x="Time", 
+  labs(x="Date", 
        y="Number of Covid-19 Deaths")
 
 
