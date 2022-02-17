@@ -1,4 +1,6 @@
 library(tidyverse)
+library(gganimate)
+library(palmerpenguins)
 
 #message from Dr. Zahn
 
@@ -97,4 +99,91 @@ df<- read.csv("./Data/Bird_Measurements.csv")
 
 mutate(case_when())
 
+
+penguins %>% names
+
+penguins %>% 
+  ggplot(aes(x=species,y=body_mass_g, color=body_mass_g))+
+  geom_jitter()
+
+penguins %>% 
+  mutate(opinion=case_when(body_mass_g > 5000 ~ "chonky",
+                           body_mass_g <= 5000 ~ "not chonky")) %>% 
+  ggplot(aes(x=species, y=body_mass_g, color=opinion))+
+  geom_jitter()
+
+
+case_when()
+
+df<-read_csv("./Data/BioLog_Plate_Data.csv")
+
+df %>% 
+  pivot_longer(starts_with("Hr_"),
+               names_to= "Time",
+               values_to= "Absorbance", 
+               names_prefix= "Hr_") %>% 
+  mutate(Time=as.numeric(Time)) %>% 
+  mutate(SampleType = case_when(`Sample ID` == "Clear_Creek" ~ "Water",
+                                `Sample ID` == "Waste_Water" ~ "Water",
+                                TRUE ~ "Soil")) %>% 
+  ggplot()
+
+table1 %>% 
+  filter(year == 2000 & cases > 3000) %>% 
+  select(-year) %>% 
+  mutate(rate = (cases/population)*100) %>% 
+  arrange(desc(rate, population))
+
+table2 %>% 
+  pivot_wider(id_cols = c(country,year), #what to leave behind
+              names_from=type, #which column has new variables
+              values_from=count) #which column has the values
+
+table3 %>% 
+  separate(rate, 
+           into= c("cases","population"))
+#Quotations marks are used because you are naming new columns that weren't there before
+ 
+full_join(
+table4a %>% 
+  pivot_longer(-country,
+               names_to="year",
+               values_to="cases"),
+table4b %>% 
+  pivot_longer(-country,
+               names_to="year",
+               values_to="population")
+)
+
+
+
+pivot_longer()
+pivot_wider()
+mutate()
+arrange()
+filter() #pick rows based on some statements
+select() 
+
+
+library(janitor)
+
+iris %>% names
+
+janitor::clean_names(iris) %>% names
+
+iris<- clean_names(iris)
+
+gganimate
+
+df <- read_csv("./Data/BioLog_Plate_Data.csv")
+
+df %>% 
+  pivot_longer(starts_with("Hr_"), names_to ="time", values_to ="absorbance",
+               names_prefix = "Hr_") %>% 
+  mutate(time=as.numeric(time)) %>% 
+  filter(Substrate == "L-Arginine") %>% 
+  ggplot(aes(x=time, y=absorbance))+
+  geom_point()+
+  facet_wrap(~Rep) +
+  gganimate::transition_reveal(time)
 
