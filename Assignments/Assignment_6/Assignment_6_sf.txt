@@ -40,4 +40,3 @@ dat3 %>%
   geom_line(size=1)+
   facet_wrap(~Dilution)+
   transition_reveal(Time)
-
