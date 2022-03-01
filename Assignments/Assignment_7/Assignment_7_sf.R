@@ -37,6 +37,3 @@ Flights %>%
   geom_smooth()
 #5. Plot effect of snowfall on departure and arrival delays ________
   
-
-
-
