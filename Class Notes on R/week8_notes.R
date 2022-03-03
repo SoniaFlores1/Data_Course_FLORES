@@ -63,71 +63,81 @@ add_predictions(data=testing_set, mod3) %>%
 #Then you can look at all the resulting plots to see how well overall the model works.
 #This is basically bootstrapping.
 
-library(tidyverse)
-library(modelr)
-library(easystats)
-library(palmerpenguins)
 
+#import -> tidy -> visualize (plot) -> model -> communicate (What does it mean?)
+
+#Does flipper_length_mm differ significantly between male and female penguins?
+glimpse(penguins)
+
+mod4<- glm(data=penguins,
+           formula= flipper_length_mm ~ sex)
+summary(mod4)
+add_predictions(data=penguins, mod4) %>% 
+  ggplot(aes(x=flipper_length_mm, color=sex))+
+  geom_boxplot()
+#AOV models
+aov_mod<- penguins %>% 
+  aov(data=.,
+      formula=flipper_length_mm ~ sex * species)
+summary(aov_mod)
+#now do a Post-Hoc test on your anova model.
+TukeyHSD(aov_mod) #%>% plot
 penguins %>% glimpse
 
-penguins <- penguins %>% 
-  mutate(Fatty = case_when(body_mass_g > 5000 ~ TRUE,
-                           body_mass_g <= 5000 ~ FALSE))
-
-mod2 <- glm(data = penguins,
-            formula = Fatty ~ bill_length_mm * bill_depth_mm,
-            family="binomial")
-
-add_predictions(penguins,mod2,type="response") %>% 
-  ggplot(aes(x=bill_length_mm,y=pred)) +
-  geom_smooth()
+penguins %>% 
+  filter(sex %in% c("male","female")) %>% 
+  ggplot(aes(x=species, y=flipper_length_mm, fill=sex))+
+  geom_boxplot()
 
 
-# Cross-validiation
+#Does flipper_length_mm change from year to year?
+penguins %>% 
+  ggplot(aes(x=factor(year), y=flipper_length_mm))+
+  geom_boxplot()
+  #There seems to be a difference between years, but which is more significant?
+#mod5<-glm(data=penguins,
+      #formula= flipper_length_mm ~ year)
+aov_mod2<- penguins %>% 
+  aov(data=.,
+      formula=flipper_length_mm ~ factor(year))
 
-# split data into training and testing sets
-training_set <- penguins %>% slice_sample(prop = .75)
-testing_set <- anti_join(penguins,training_set)
+#summary(mod5)
+summary(aov_mod2)
+TukeyHSD(aov_mod2) %>% plot 
+   #there is a significant difference between 2008-2007 and 2009-2007.
+   #the differnece between 2009-2008 is not significant.
 
-# train the model on the training set
-mod3 <- glm(data=training_set,
-            formula = bill_length_mm ~ sex * species * body_mass_g)
+penguins %>% 
+  mutate(year_f=factor(year)) %>% 
+  ggplot(aes(x=year_f, y=flipper_length_mm, fill=sex))+
+  geom_boxplot()+
+  facet_wrap(~species)
 
-# Do this whole thing 100 times
+penguins %>% 
+  mutate(year_f=factor(year)) %>%
+  aov(data=.,
+      formula= flipper_length_mm ~ year_f+species+sex) %>% 
+  TukeyHSD() %>% 
+  plot
 
-# make empty lists to fill with the for-loop
-mod_list <- list()
-err_list <- list()
+data("us_rent_income")
 
-for(i in 1:100){
-  training_set <- penguins %>% slice_sample(prop = .75)
-  testing_set <- anti_join(penguins,training_set)
-  
-  mod3 <- glm(data=training_set,
-              formula = bill_length_mm ~ sex * species * body_mass_g)
-  mod_list[[i]] <- mod3 # fill the list with the models
-  
-  
-  # test the model on the testing set and pull the error terms - add to err_list
-  err_list[[i]] <- add_predictions(testing_set,mod3) %>% 
-    mutate(error = abs(bill_length_mm - pred)) %>% 
-    pluck("error")
-}
+#tidy the data before doing anything
+tidy_rent<-us_rent_income %>% 
+  select(-moe) %>% 
+  pivot_wider(id_cols= NAME,
+              names_from= variable,
+              values_from= estimate)
 
-#  compare the model stats for all 100 of those cross-validations
-performance_list <- compare_performance(mod_list)
-names(performance_list)
+tidy_rent %>% 
+  ggplot(aes(x=income,y=rent))+
+  geom_point()+
+  geom_smooth(method="lm")
 
-# Look at the distributions for R2
-performance_list %>% 
-  ggplot(aes(x=R2)) +
-  geom_density()
+#response = rent
+#predictors = state(NAME), income
 
-# look at error terms for each model iteration
-mean_abs_error <- err_list %>% 
-  map_dbl(mean,na.rm=TRUE)
-
-# distribution for absolute mean error among all iterations
-data.frame(abs_error=mean_abs_error) %>% 
-  ggplot(aes(x=abs_error)) +
-  geom_density()
+tidy_rent %>% 
+  glm(data=.,
+      formula= rent ~ income) %>% 
+  summary()
