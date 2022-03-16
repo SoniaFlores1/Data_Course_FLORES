@@ -24,8 +24,8 @@ ggsave("FLORES_Plot_1.png", width=6, height =5, dpi=300)
 #5. Create another plot that shows the mean U5MR for all the countries
 #within a given continent at each year
 unicef2 %>% 
-  group_by(Continent, Year, CountryName) %>% 
-  summarize(mean_U5MR=mean(U5MR)) %>%
+  group_by(Continent, Year) %>% 
+  summarize(mean_U5MR= mean(U5MR, na.rm= T)) %>%
   ggplot(aes(x=Year, y=mean_U5MR, color=Continent))+
   geom_line(size=1)
 
