@@ -128,3 +128,6 @@ x_val(data=mpg, n=100, form= formula(cty ~ displ))
 #you can also change the formula here and it will still work!
 x_val(data=mpg, n=100, form= formula(cty ~ cyl + displ))
 
+#You can use the source() function to load functions saved as an R script
+#into a new  R script for you to use.
+

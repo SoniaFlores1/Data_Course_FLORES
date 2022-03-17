@@ -1,0 +1,39 @@
+
+Call:
+glm(formula = log10(mass) ~ egg_mass + sex, data = full)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-10.5187   -0.4631   -0.0424    0.4690    1.4917  
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  1.6370605  0.0138422 118.266   <2e-16 ***
+egg_mass     0.0092544  0.0001557  59.450   <2e-16 ***
+sexmale      0.0112298  0.0187136   0.600    0.548    
+sexunsexed  -0.0332243  0.0273015  -1.217    0.224    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 0.3595659)
+
+    Null deviance: 2978.1  on 4741  degrees of freedom
+Residual deviance: 1703.6  on 4738  degrees of freedom
+  (6565 observations deleted due to missingness)
+AIC: 8612.8
+
+Number of Fisher Scoring iterations: 2
+
+We fitted a linear model (estimated using ML) to predict mass with egg_mass and sex (formula: log10(mass) ~ egg_mass + sex). The model's explanatory power is very weak (R2 = -0.03). The model's intercept, corresponding to egg_mass = 0 and sex = female, is at 1.64 (95% CI [1.61, 1.66], t(4738) = 118.27, p < .001). Within this model:
+
+  - The effect of egg mass is statistically significant and positive (beta = 9.25e-03, 95% CI [8.95e-03, 9.56e-03], t(4738) = 59.45, p < .001; Std. beta = 0.10, 95% CI [0.10, 0.10])
+  - The effect of sex [male] is statistically non-significant and positive (beta = 0.01, 95% CI [-0.03, 0.05], t(4738) = 0.60, p = 0.548; Std. beta = 2.27e-03, 95% CI [-8.33e-04, 5.37e-03])
+  - The effect of sex [unsexed] is statistically non-significant and negative (beta = -0.03, 95% CI [-0.09, 0.02], t(4738) = -1.22, p = 0.224; Std. beta = 1.14e-03, 95% CI [-3.38e-03, 5.67e-03])
+
+Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using We fitted a linear model (estimated using ML) to predict mass with egg_mass and sex (formula: log10(mass) ~ egg_mass + sex). The model's explanatory power is very weak (R2 = -0.03). The model's intercept, corresponding to egg_mass = 0 and sex = female, is at 1.64 (95% CI [1.61, 1.66], t(4738) = 118.27, p < .001). Within this model:
+
+  - The effect of egg mass is statistically significant and positive (beta = 9.25e-03, 95% CI [8.95e-03, 9.56e-03], t(4738) = 59.45, p < .001; Std. beta = 0.10, 95% CI [0.10, 0.10])
+  - The effect of sex [male] is statistically non-significant and positive (beta = 0.01, 95% CI [-0.03, 0.05], t(4738) = 0.60, p = 0.548; Std. beta = 2.27e-03, 95% CI [-8.33e-04, 5.37e-03])
+  - The effect of sex [unsexed] is statistically non-significant and negative (beta = -0.03, 95% CI [-0.09, 0.02], t(4738) = -1.22, p = 0.224; Std. beta = 1.14e-03, 95% CI [-3.38e-03, 5.67e-03])
+
+Standardized parameters were obtained by fitting the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-values were computed using 
