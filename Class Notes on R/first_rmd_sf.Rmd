@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+author: "Sonia Flores"
+date: "3/22/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(plotly)
+```
+
+This is a quick analysis of the built-in 'mpg' data set that comes with tidyverse.
+
+
+Here's a glimpse of the mpg data:
+```{r}
+mpg %>% glimpse()
+```
+
+Let's now plot city miles per gallon versus displacement...
+```{r fig.align='center', fig.height=5, fig.width=5}
+p<-ggplot(mpg, aes(x=displ, y=cty))+
+  geom_point()+
+  theme_minimal()
+
+plotly::ggplotly(p)
+```
+
+
+Make a list:
+
+  - Item 1
+  - Item 2
+  - [click here](http://google.com)
+  
+
+
+
+
+
+
