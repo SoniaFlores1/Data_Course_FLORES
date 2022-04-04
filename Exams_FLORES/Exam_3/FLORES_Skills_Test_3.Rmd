@@ -1,0 +1,110 @@
+---
+title: "Skills Test 3"
+author: "Sonia"
+date: "4/4/2022"
+output: 
+  html_document:
+    code_folding: hide
+---
+Libraries to load before you start:
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(janitor)
+library(modelr)
+library(easystats)
+library(broom)
+theme_set(theme_minimal())
+```
+
+
+
+1. Load and clean FacultySalaries_1995.csv. Then graph Salary vs Rank facteted by Tier.
+
+```{r message=FALSE, warning=FALSE}
+
+#loading data
+df<- read_csv("./FacultySalaries_1995.csv")
+#tidying
+#split into several data frames by faculty ranks for convenience
+Assist<- df %>%
+  select(FedID, UnivName, State, Tier, AvgAssistProfSalary, AvgAssistProfComp,
+         NumAssistProfs, NumInstructors, NumFacultyAll) 
+
+Assoc<- df %>%
+  select(FedID, UnivName, State, Tier, AvgAssocProfSalary, AvgAssocProfComp,
+         NumAssocProfs, NumInstructors, NumFacultyAll) 
+
+Full<- df %>%
+  select(FedID, UnivName, State, Tier, AvgFullProfSalary, AvgFullProfComp,
+         NumFullProfs, NumInstructors, NumFacultyAll) 
+
+Assist<- Assist %>% 
+  mutate(Rank="Assist", Salary=AvgAssistProfSalary, Comp=AvgAssistProfComp) %>% 
+  select(-c(AvgAssistProfSalary, AvgAssistProfComp, NumAssistProfs))
+
+Assoc<- Assoc %>% 
+  mutate(Rank="Assoc", Salary=AvgAssocProfSalary, Comp=AvgAssocProfComp) %>% 
+  select(-c(AvgAssocProfSalary, AvgAssocProfComp, NumAssocProfs))
+
+Full<- Full %>% 
+  mutate(Rank="Full", Salary=AvgFullProfSalary, Comp=AvgFullProfComp) %>% 
+  select(-c(AvgFullProfSalary, AvgFullProfComp, NumFullProfs))
+
+#joining
+full <- full_join(Assist, Assoc) %>% 
+  full_join(Full)
+
+#Visualize!
+full %>% 
+  filter(!Tier=='VIIB') %>% 
+  ggplot(aes(x=Rank, y=Salary, fill=Rank))+
+  geom_boxplot() +
+  facet_wrap(~Tier)
+
+```
+
+
+2. Build an ANOVA model and display the summary output in your report.
+```{r}
+mod<- aov(data=full,
+            formula=Salary ~ State + Rank + Tier)
+
+tidy(mod)
+
+```
+
+3. Load and Tidy “Juniper_Oils.csv”
+
+```{r message=FALSE, warning=FALSE}
+#Load in the data
+df<- read_csv("./Juniper_Oils.csv")
+#Time to tidy
+chem<- df %>%
+  pivot_longer(cols=c("alpha-pinene","para-cymene","alpha-terpineol","cedr-9-ene","alpha-cedrene","beta-cedrene","cis-thujopsene","alpha-himachalene","beta-chamigrene","cuparene","compound 1","alpha-chamigrene","widdrol","cedrol","beta-acorenol","alpha-acorenol","gamma-eudesmol","beta-eudesmol","alpha-eudesmol","cedr-8-en-13-ol","cedr-8-en-15-ol","compound 2","thujopsenal"),
+               names_to="ChemicalID",
+               values_to="Concentrations")
+
+```
+
+4. Graph the concentration of the compounds by years since burn, faceted by chemical ids.
+
+```{r message=FALSE, warning=FALSE}
+chem %>% 
+  ggplot(aes(x=YearsSinceBurn, y=Concentrations))+
+  geom_smooth() +
+  facet_wrap(~ChemicalID, scales = "free_y")
+```
+
+5.  Use a generalized linear model to find which chemicals show concentrations that are significantly (significant, as in P < 0.05) affected by “Years Since Burn”.
+
+```{r}
+#mod2<- glm(data=chem,
+           #formula= ChemicalID ~ Concentrations + YearsSinceBurn)
+
+#tidy(mod2) %>% 
+  #filter(p.value<0.05)
+```
+
+
+
+
