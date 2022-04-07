@@ -1,12 +1,15 @@
 ---
 title: "Skills Test 3"
-author: "Sonia"
+author: "Sonia Flores"
 date: "4/4/2022"
 output: 
   html_document:
     code_folding: hide
 ---
-Libraries to load before you start:
+
+### This is the start of Skills Test #3
+
+#### Libraries to load before you start:
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(janitor)
@@ -18,7 +21,7 @@ theme_set(theme_minimal())
 
 
 
-1. Load and clean FacultySalaries_1995.csv. Then graph Salary vs Rank facteted by Tier.
+#### 1. Load and clean FacultySalaries_1995.csv. Then graph Salary vs Rank facteted by Tier.
 
 ```{r message=FALSE, warning=FALSE}
 
@@ -37,7 +40,7 @@ Assoc<- df %>%
 Full<- df %>%
   select(FedID, UnivName, State, Tier, AvgFullProfSalary, AvgFullProfComp,
          NumFullProfs, NumInstructors, NumFacultyAll) 
-
+#cleaning up each data frame
 Assist<- Assist %>% 
   mutate(Rank="Assist", Salary=AvgAssistProfSalary, Comp=AvgAssistProfComp) %>% 
   select(-c(AvgAssistProfSalary, AvgAssistProfComp, NumAssistProfs))
@@ -50,7 +53,7 @@ Full<- Full %>%
   mutate(Rank="Full", Salary=AvgFullProfSalary, Comp=AvgFullProfComp) %>% 
   select(-c(AvgFullProfSalary, AvgFullProfComp, NumFullProfs))
 
-#joining
+#joining the clean data frames into one.
 full <- full_join(Assist, Assoc) %>% 
   full_join(Full)
 
@@ -64,7 +67,7 @@ full %>%
 ```
 
 
-2. Build an ANOVA model and display the summary output in your report.
+#### 2. Build an ANOVA model and display the summary output in your report.
 ```{r}
 mod<- aov(data=full,
             formula=Salary ~ State + Rank + Tier)
@@ -73,7 +76,7 @@ tidy(mod)
 
 ```
 
-3. Load and Tidy “Juniper_Oils.csv”
+#### 3. Load and Tidy “Juniper_Oils.csv”
 
 ```{r message=FALSE, warning=FALSE}
 #Load in the data
@@ -86,7 +89,7 @@ chem<- df %>%
 
 ```
 
-4. Graph the concentration of the compounds by years since burn, faceted by chemical ids.
+#### 4. Graph the concentration of the compounds by years since burn, faceted by chemical ids.
 
 ```{r message=FALSE, warning=FALSE}
 chem %>% 
@@ -95,16 +98,19 @@ chem %>%
   facet_wrap(~ChemicalID, scales = "free_y")
 ```
 
-5.  Use a generalized linear model to find which chemicals show concentrations that are significantly (significant, as in P < 0.05) affected by “Years Since Burn”.
+#### 5.  Use a generalized linear model to find which chemicals show concentrations that are significantly (significant, as in P < 0.05) affected by “Years Since Burn”.
 
-```{r}
-#mod2<- glm(data=chem,
-           #formula= ChemicalID ~ Concentrations + YearsSinceBurn)
+```{r message=FALSE, warning=FALSE}
+mod2<- glm(data=chem,
+           formula= Concentrations ~ ChemicalID * YearsSinceBurn)
 
-#tidy(mod2) %>% 
-  #filter(p.value<0.05)
+tidy(mod2) %>% 
+  filter(p.value<0.05)
+
+
 ```
 
 
+### This is the end of Skills Test #3.
 
 
