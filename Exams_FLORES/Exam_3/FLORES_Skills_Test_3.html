@@ -278,16 +278,17 @@ chem&lt;- df %&gt;%
            formula= Concentrations ~ ChemicalID * YearsSinceBurn)
 
 tidy(mod2) %&gt;% 
+  mutate(term= term %&gt;% str_remove_all(&quot;ChemicalID&quot;)) %&gt;% 
   filter(p.value&lt;0.05)</code></pre>
 <pre><code>## # A tibble: 6 x 5
-##   term                                    estimate std.error statistic  p.value
-##   &lt;chr&gt;                                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 ChemicalIDalpha-cedrene                    7.88      1.93       4.08 4.97e- 5
-## 2 ChemicalIDcedr-8-en-13-ol                  7.62      1.93       3.95 8.72e- 5
-## 3 ChemicalIDcedrol                          22.5       1.93      11.7  5.12e-29
-## 4 ChemicalIDcis-thujopsene                  17.3       1.93       8.95 2.93e-18
-## 5 ChemicalIDwiddrol                          5.82      1.93       3.01 2.69e- 3
-## 6 ChemicalIDcis-thujopsene:YearsSinceBurn    0.332     0.141      2.35 1.90e- 2</code></pre>
+##   term                          estimate std.error statistic  p.value
+##   &lt;chr&gt;                            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 alpha-cedrene                    7.88      1.93       4.08 4.97e- 5
+## 2 cedr-8-en-13-ol                  7.62      1.93       3.95 8.72e- 5
+## 3 cedrol                          22.5       1.93      11.7  5.12e-29
+## 4 cis-thujopsene                  17.3       1.93       8.95 2.93e-18
+## 5 widdrol                          5.82      1.93       3.01 2.69e- 3
+## 6 cis-thujopsene:YearsSinceBurn    0.332     0.141      2.35 1.90e- 2</code></pre>
 </div>
 </div>
 <div id="this-is-the-end-of-skills-test-3." class="section level3">

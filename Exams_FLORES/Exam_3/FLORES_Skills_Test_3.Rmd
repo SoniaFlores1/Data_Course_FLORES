@@ -105,6 +105,7 @@ mod2<- glm(data=chem,
            formula= Concentrations ~ ChemicalID * YearsSinceBurn)
 
 tidy(mod2) %>% 
+  mutate(term= term %>% str_remove_all("ChemicalID")) %>% 
   filter(p.value<0.05)
 
 
